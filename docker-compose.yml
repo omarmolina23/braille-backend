@@ -1,0 +1,35 @@
+# Desarrollo local.
+#   Solo la base de datos:   docker compose up -d db
+#   Base de datos + API:      docker compose --profile completo up --build
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: braille
+      POSTGRES_PASSWORD: braille
+      POSTGRES_DB: braille
+    ports:
+      - '5432:5432'
+    volumes:
+      - datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U braille']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    profiles: ['completo']
+    build: .
+    environment:
+      DATABASE_URL: postgresql://braille:braille@db:5432/braille
+      ORIGENES_WEB: http://localhost:5173
+      PORT: 3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  datos:

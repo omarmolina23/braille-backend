@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Lint, tipos, pruebas, migraciones y contrato
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: braille
+          POSTGRES_PASSWORD: braille
+          POSTGRES_DB: braille
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U braille"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://braille:braille@localhost:5432/braille
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm test:e2e
+
+      # Las migraciones deben aplicarse limpias sobre una base vacía.
+      - run: pnpm db:desplegar
+
+      # El contrato publicado (openapi.json) debe coincidir con el código.
+      - run: pnpm openapi:exportar
+      - name: Verificar que openapi.json está actualizado
+        run: git diff --exit-code openapi.json || (echo "Ejecuten pnpm openapi:exportar y suban openapi.json" && exit 1)

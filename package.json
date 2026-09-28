@@ -1,0 +1,64 @@
+{
+  "name": "braille-backend",
+  "version": "0.1.0",
+  "description": "API del proyecto de lectoescritura Braille (UFPS): usuarios, contenidos y progreso",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "postinstall": "prisma generate",
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "lint": "oxlint src/ test/",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:migrar": "prisma migrate dev",
+    "db:desplegar": "prisma migrate deploy",
+    "openapi:exportar": "nest build && node dist/exportar-openapi.js"
+  },
+  "dependencies": {
+    "@fastify/static": "10.1.5",
+    "@nestjs/common": "12.1.1",
+    "@nestjs/core": "12.1.1",
+    "@nestjs/platform-fastify": "12.1.1",
+    "@nestjs/swagger": "12.0.2",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "fastify": "5.12.5",
+    "prisma": "7.10.0",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "12.0.8",
+    "@nestjs/schematics": "12.0.6",
+    "@nestjs/testing": "12.1.1",
+    "@types/node": "22.20.4",
+    "@vitest/coverage-v8": "4.1.11",
+    "oxlint": "1.86.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma"
+    ],
+    "ignoredBuiltDependencies": [
+      "@scarf/scarf"
+    ]
+  }
+}

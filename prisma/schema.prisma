@@ -1,0 +1,64 @@
+// BORRADOR INICIAL del modelo de datos. Refleja RF-14 (registro de intentos) y RF-18 (roles) del
+// informe de requerimientos; se ajusta cuando se implementen los módulos identidad y progreso.
+// Primera migración: `pnpm db:migrar --name inicial` con la base de docker compose levantada.
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  ESTUDIANTE
+  DOCENTE
+  ADMINISTRADOR
+}
+
+model Usuario {
+  id       String    @id @default(uuid()) @db.Uuid
+  nombre   String
+  correo   String    @unique
+  rol      Rol       @default(ESTUDIANTE)
+  creadoEn DateTime  @default(now()) @map("creado_en")
+  intentos Intento[]
+
+  @@map("usuarios")
+}
+
+enum ModoIntento {
+  FISICO
+  VIRTUAL
+}
+
+enum ResultadoIntento {
+  ACIERTO
+  ESPEJO
+  FALTANTE
+  SOBRANTE
+  MIXTO
+}
+
+/// Un intento de escritura o lectura. El `id` lo genera el cliente (UUID) para que la
+/// sincronización sin conexión sea idempotente: reenviar el mismo intento no lo duplica.
+model Intento {
+  id          String           @id @db.Uuid
+  usuarioId   String           @map("usuario_id") @db.Uuid
+  usuario     Usuario          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  ejercicio   String
+  /// Máscara de 6 bits esperada y recibida (bit i − 1 = punto i), igual que el protocolo.
+  esperada    Int
+  recibida    Int
+  resultado   ResultadoIntento
+  duracionMs  Int              @map("duracion_ms")
+  modo        ModoIntento
+  realizadoEn DateTime         @map("realizado_en")
+  recibidoEn  DateTime         @default(now()) @map("recibido_en")
+
+  @@index([usuarioId, realizadoEn])
+  @@map("intentos")
+}

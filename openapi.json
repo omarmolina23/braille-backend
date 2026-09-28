@@ -1,0 +1,70 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/salud": {
+      "get": {
+        "operationId": "SaludController_obtener",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstadoSalud"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "La base de datos no responde (Problem Details)."
+          }
+        },
+        "summary": "Comprueba que la API y la base de datos responden",
+        "tags": [
+          "salud"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API Braille",
+    "description": "Usuarios, contenidos y progreso del aplicativo de lectoescritura Braille. Los errores siguen RFC 9457 (application/problem+json).",
+    "version": "0.1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "EstadoSalud": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ],
+            "example": "ok"
+          },
+          "baseDeDatos": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ],
+            "example": "ok"
+          },
+          "version": {
+            "type": "string",
+            "example": "0.1.0"
+          }
+        },
+        "required": [
+          "estado",
+          "baseDeDatos",
+          "version"
+        ]
+      }
+    }
+  }
+}
