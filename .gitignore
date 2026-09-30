@@ -5,3 +5,6 @@ coverage/
 .env
 src/generated/
 .DS_Store
+
+# Instrucciones personales para Claude Code (no se comparten)
+CLAUDE.local.md
