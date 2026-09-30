@@ -22,7 +22,7 @@ services:
     profiles: ['completo']
     build: .
     environment:
-      DATABASE_URL: postgresql://braille:braille@db:5467/braille
+      DATABASE_URL: postgresql://braille:braille@db:5432/braille
       ORIGENES_WEB: http://localhost:5173
       PORT: 3000
     ports:
