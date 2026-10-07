@@ -22,6 +22,14 @@ archivo en el mismo PR. Lo personal va en CLAUDE.local.md (no versionado). -->
   intentos), RF-15 (metas), RF-16 (panel docente), RF-17 (sincronización sin conexión), RF-18
   (registro, inicio de sesión y roles) y RF-20 (exportar CSV).
 
+## Etapa actual: versión de prueba
+
+- Lo que hay hoy es una **versión de prueba**: faltan las entidades de la base de datos (el esquema
+  de `prisma/schema.prisma` es un borrador), el funcionamiento del backend y el diseño final del
+  frontend. No se presenta como versión final.
+- Los PR de esta etapa llevan la etiqueta **`prototipo`** en GitHub (también en `braille-frontend`)
+  y sus ramas empiezan por `prototipo/`. Los de la versión final no la llevan.
+
 ## Stack
 
 NestJS 12 (ESM) con adaptador Fastify · Prisma 7 con `@prisma/adapter-pg` · PostgreSQL 17 · Zod ·
