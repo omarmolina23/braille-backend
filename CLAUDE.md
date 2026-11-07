@@ -18,13 +18,14 @@ archivo en el mismo PR. Lo personal va en CLAUDE.local.md (no versionado). -->
 - **Datos personales de estudiantes (Ley 1581 de 2012):** datos mínimos (sin documento de
   identidad), seudónimos en los reportes de investigación y consentimiento informado.
 - Requerimientos que tocan esta API (numeración de `docs/entregables/especificacion-requerimientos.md`
-  0.2): RF-23 (registro de intentos), RF-25 (exportar CSV), RF-27 (cuentas de estudiantes),
-  RF-28 (consultar progreso), RF-29 (roles), RF-30 (acceso del estudiante con código), RF-31 y
-  RF-32 (grupos y asignación de niveles), RF-33 (panel del tutor), RF-39 (sesiones) y RF-40 (vista
-  previa). Los contenidos salen de RF-08 (series) y de la tabla del alfabeto (ADR-0006). Ninguno
-  está implementado todavía.
-- Sin RF en la especificación 0.2: las metas y la sincronización sin conexión. Si se retoman,
-  primero se agregan a la especificación (regla de la raíz: nada se implementa sin un RF).
+  0.3): RF-23 (registro de intentos), RF-25 (exportar CSV), RF-27 (cuentas de estudiantes),
+  RF-28 (consultar y exportar progreso), RF-29 (roles), RF-30 (acceso del estudiante con código),
+  RF-31 y RF-32 (grupos y asignación de módulos), RF-33 (panel del tutor), RF-38 (autoregistro del
+  estudiante), RF-39 (sesiones), RF-41 (módulos propios del tutor), RF-42 (metas por sesión) y
+  RF-43 (registro del tutor con aprobación). Los contenidos salen de RF-08 (series) y de la tabla
+  del alfabeto (ADR-0006). Ninguno está implementado todavía.
+- Sin RF en la especificación 0.3: la sincronización sin conexión. Si se retoma, primero se agrega
+  a la especificación (regla de la raíz: nada se implementa sin un RF).
 
 ## Etapa actual: versión de prueba
 
@@ -145,12 +146,17 @@ detail?, instance?, errores? }`, con `type: 'about:blank'` y `content-type: appl
 
 ## Seguridad y privacidad
 
-- Al construir `identidad` (ADR-0009): tutores y administradores con correo y contraseña (Argon2id);
-  estudiantes con código corto de 6 dígitos que crea el tutor o el administrador, con límite de
-  intentos. Sesión en cookie `httpOnly` y autorización por rol (estudiante, tutor y administrador).
-  Sin CAPTCHA ni pruebas cognitivas (WCAG 3.3.8).
-- Todo endpoint declara qué roles pueden usarlo. Solo son públicos la salud y el inicio de sesión;
-  no hay registro abierto de estudiantes. (Hoy no hay autenticación: el único endpoint es la salud.)
+- Al construir `identidad` (ADR-0013): tutores y administradores con correo y contraseña (Argon2id);
+  el tutor se registra y queda pendiente hasta que un administrador lo apruebe. Estudiantes con
+  código corto de 6 dígitos que crea el tutor, el administrador o el propio estudiante sin grupo
+  (autoregistro, cuenta marcada como tal), con límite de intentos. Sesión en cookie `httpOnly` y
+  autorización por rol (estudiante, tutor y administrador). Sin CAPTCHA ni pruebas cognitivas
+  (WCAG 3.3.8).
+- Todo endpoint declara qué roles pueden usarlo. Solo son públicos la salud, el inicio de sesión, el
+  autoregistro de estudiante y el registro de tutor, estos dos con límite de frecuencia por origen.
+  (Hoy no hay autenticación: el único endpoint es la salud.)
+- Las cuentas de autoregistro no entran en la exportación de la evaluación hasta tener
+  consentimiento registrado.
 - No registrar datos personales en los logs.
 - Secretos solo en `.env` (no versionado), Railway y GitHub; `.env.example` sin valores reales.
 
