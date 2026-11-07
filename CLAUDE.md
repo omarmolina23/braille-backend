@@ -63,21 +63,21 @@ Dockerfile                  Imagen de producción: migrate deploy y luego node d
 
 ## Comandos (PowerShell)
 
-| Comando                                   | Qué hace                                                      |
-| ----------------------------------------- | ------------------------------------------------------------- |
-| `pnpm install`                            | Instala y genera el cliente de Prisma (`postinstall`)         |
-| `docker compose up -d db`                 | PostgreSQL de desarrollo en **localhost:5467**                |
-| `docker compose --profile completo up --build` | Base de datos + API en contenedores                      |
-| `pnpm start:dev`                          | API en http://localhost:3000 (`/v1/salud`, `/docs`, `/docs-json`) |
-| `pnpm build` / `pnpm start:prod`          | Compila a `dist/` y ejecuta `node dist/main.js`               |
-| `pnpm test` / `pnpm test:watch`           | Unitarias (`src/**/*.spec.ts`)                                |
-| `pnpm test:cov`                           | Unitarias con cobertura (sin umbral configurado)              |
-| `pnpm test:e2e`                           | E2E sobre Fastify (`test/**/*.e2e-spec.ts`), sin BD real      |
-| `pnpm lint` / `pnpm typecheck`            | oxlint (`src/` y `test/`) / TypeScript                        |
-| `pnpm format` / `pnpm format:check`       | Prettier                                                      |
-| `pnpm db:migrar --name <nombre>`          | Crea y aplica una migración en desarrollo                     |
-| `pnpm db:desplegar`                       | Aplica migraciones pendientes (CI y producción)               |
-| `pnpm openapi:exportar`                   | Compila y regenera `openapi.json`                             |
+| Comando                                        | Qué hace                                                          |
+| ---------------------------------------------- | ----------------------------------------------------------------- |
+| `pnpm install`                                 | Instala y genera el cliente de Prisma (`postinstall`)             |
+| `docker compose up -d db`                      | PostgreSQL de desarrollo en **localhost:5467**                    |
+| `docker compose --profile completo up --build` | Base de datos + API en contenedores                               |
+| `pnpm start:dev`                               | API en http://localhost:3000 (`/v1/salud`, `/docs`, `/docs-json`) |
+| `pnpm build` / `pnpm start:prod`               | Compila a `dist/` y ejecuta `node dist/main.js`                   |
+| `pnpm test` / `pnpm test:watch`                | Unitarias (`src/**/*.spec.ts`)                                    |
+| `pnpm test:cov`                                | Unitarias con cobertura (sin umbral configurado)                  |
+| `pnpm test:e2e`                                | E2E sobre Fastify (`test/**/*.e2e-spec.ts`), sin BD real          |
+| `pnpm lint` / `pnpm typecheck`                 | oxlint (`src/` y `test/`) / TypeScript                            |
+| `pnpm format` / `pnpm format:check`            | Prettier                                                          |
+| `pnpm db:migrar --name <nombre>`               | Crea y aplica una migración en desarrollo                         |
+| `pnpm db:desplegar`                            | Aplica migraciones pendientes (CI y producción)                   |
+| `pnpm openapi:exportar`                        | Compila y regenera `openapi.json`                                 |
 
 El CI (`.github/workflows/ci.yml`) corre, en este orden: `format:check`, `lint`, `typecheck`,
 `test`, `test:e2e`, `db:desplegar` sobre un PostgreSQL vacío y `openapi:exportar` + `git diff`
@@ -175,24 +175,24 @@ detail?, instance?, errores? }`, con `type: 'about:blank'` y `content-type: appl
 La propuesta del espacio de trabajo describe otro backend. Ninguna de estas diferencias está
 resuelta: registrarlas aquí no cambia ni el código ni la propuesta. Resolverlas exige un ADR.
 
-| Tema                 | Propuesta (`braille-api`, ADR-0002 y ADR-0004 propuesto) | Código actual                                      |
-| -------------------- | -------------------------------------------------------- | -------------------------------------------------- |
-| Framework            | Express + Zod                                            | NestJS 12 + Fastify (sin ADR que lo registre)      |
-| Gestor de paquetes   | npm                                                      | pnpm (`npm` no se usa)                             |
-| Organización         | Capas `domain/application/infrastructure/presentation`   | Módulos NestJS por dominio (`salud`, `config`…)    |
-| Casos de uso         | Una clase `*.use-case.ts` con `execute(input)`           | Servicios NestJS; aún no hay casos de uso          |
-| Prefijo de rutas     | `/api/v1`, recursos en inglés (`/students`)              | `/v1`, recursos en español (`/v1/salud`)           |
-| Validación y OpenAPI | Esquemas Zod que generan OpenAPI                         | Zod solo para configuración; OpenAPI con decoradores Swagger |
-| Errores              | Problem Details con `code` (`LETTER_NOT_FOUND`)          | Problem Details sin `code`; campo extra `errores`  |
-| Base de datos        | Prisma + SQLite (dev y pruebas)                          | Prisma 7 + PostgreSQL 17 (Docker, puerto 5467)     |
-| Pruebas              | Integración con Supertest y SQLite                       | E2E con `app.inject` y Prisma simulado             |
-| Lint                 | `lint`, `format`, `typecheck` (sin herramienta fijada)   | oxlint + Prettier                                  |
-| Comandos             | `npm run dev`, `openapi:export`, `prisma migrate dev`    | `pnpm start:dev`, `openapi:exportar`, `db:migrar`  |
-| Variable CORS        | `CORS_ORIGINS`                                           | `ORIGENES_WEB`                                     |
-| Identificadores      | En inglés (CLAUDE.md raíz)                               | En español                                         |
-| Ramas                | `feature/RF-xx-…`, commits con `(RF-xx)`                 | `prototipo/…`, commits sin RF                      |
+| Tema                 | Propuesta (`braille-api`, ADR-0002 y ADR-0004 propuesto) | Código actual                                                   |
+| -------------------- | -------------------------------------------------------- | --------------------------------------------------------------- |
+| Framework            | Express + Zod                                            | NestJS 12 + Fastify (sin ADR que lo registre)                   |
+| Gestor de paquetes   | npm                                                      | pnpm (`npm` no se usa)                                          |
+| Organización         | Capas `domain/application/infrastructure/presentation`   | Módulos NestJS por dominio (`salud`, `config`…)                 |
+| Casos de uso         | Una clase `*.use-case.ts` con `execute(input)`           | Servicios NestJS; aún no hay casos de uso                       |
+| Prefijo de rutas     | `/api/v1`, recursos en inglés (`/students`)              | `/v1`, recursos en español (`/v1/salud`)                        |
+| Validación y OpenAPI | Esquemas Zod que generan OpenAPI                         | Zod solo para configuración; OpenAPI con decoradores Swagger    |
+| Errores              | Problem Details con `code` (`LETTER_NOT_FOUND`)          | Problem Details sin `code`; campo extra `errores`               |
+| Base de datos        | Prisma + SQLite (dev y pruebas)                          | Prisma 7 + PostgreSQL 17 (Docker, puerto 5467)                  |
+| Pruebas              | Integración con Supertest y SQLite                       | E2E con `app.inject` y Prisma simulado                          |
+| Lint                 | `lint`, `format`, `typecheck` (sin herramienta fijada)   | oxlint + Prettier                                               |
+| Comandos             | `npm run dev`, `openapi:export`, `prisma migrate dev`    | `pnpm start:dev`, `openapi:exportar`, `db:migrar`               |
+| Variable CORS        | `CORS_ORIGINS`                                           | `ORIGENES_WEB`                                                  |
+| Identificadores      | En inglés (CLAUDE.md raíz)                               | En español                                                      |
+| Ramas                | `feature/RF-xx-…`, commits con `(RF-xx)`                 | `prototipo/…`, commits sin RF                                   |
 | Alfabeto canónico    | Datos iniciales de letras en la API (ADR-0006)           | No hay contenidos; la tabla vive en `braille-core` del frontend |
-| Despliegue           | Por decidir                                              | Dockerfile + Railway                               |
+| Despliegue           | Por decidir                                              | Dockerfile + Railway                                            |
 
 ## Problemas conocidos
 
