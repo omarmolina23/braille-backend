@@ -32,8 +32,8 @@ archivo en el mismo PR. Lo personal va en CLAUDE.local.md (no versionado). -->
 - Hoy solo existe el **esqueleto**: configuración validada, conexión a PostgreSQL, filtro de errores,
   OpenAPI y un endpoint de salud. Ningún módulo de dominio existe todavía; el esquema de
   `prisma/schema.prisma` es un borrador.
-- Los PR de esta etapa llevan la etiqueta **`prototipo`** en GitHub (también en `braille-frontend`)
-  y sus ramas empiezan por `prototipo/`. Los de la versión final no la llevan.
+- Los PR de esta etapa llevan la etiqueta **`prototipo`** en GitHub (también en `braille-frontend`);
+  los de la versión final no la llevan. Las ramas siguen el flujo de la sección Git.
 
 ## Stack (versiones exactas en `package.json`)
 
@@ -171,9 +171,15 @@ detail?, instance?, errores? }`, con `type: 'about:blank'` y `content-type: appl
 
 ## Git
 
-- Ramas cortas desde `main`; _Conventional Commits_ en español (`feat:`, `fix:`, `docs:`, `test:`,
-  `refactor:`, `chore:`; ámbito opcional, p. ej. `feat(progreso): …`).
-- Todo cambio entra por PR revisado por el otro integrante y con el CI en verde.
+Fuente de verdad: `../../docs/metodologia/flujo-de-trabajo.md` (espacio de trabajo).
+
+- Git Flow: `main` (versiones usadas con usuarios, etiquetadas `vX.Y.Z`) y `develop` (integración).
+  Cada RF va en `feature/RF-xx-descripcion` desde `develop`; las tareas sin RF, en `chore/`, `docs/`,
+  `ci/` o `fix/`. `release/X.Y.Z` y `hotfix/X.Y.Z` se integran en `main` y en `develop`.
+- _Conventional Commits_ en español: `tipo(alcance): descripción en minúscula (RF-xx)`. Los tipos y
+  alcances válidos están en `.github/workflows/pr-title.yml`.
+- Todo cambio entra por PR a `develop`, revisado por el otro integrante y con el CI en verde, y se
+  integra con squash merge: el título del PR queda como commit.
 - No incluir enlaces de sesión en commits ni en PRs.
 
 ## Diferencias con la propuesta (`../braille-api/CLAUDE.md`)
@@ -196,7 +202,6 @@ resuelta: registrarlas aquí no cambia ni el código ni la propuesta. Resolverla
 | Comandos             | `npm run dev`, `openapi:export`, `prisma migrate dev`    | `pnpm start:dev`, `openapi:exportar`, `db:migrar`               |
 | Variable CORS        | `CORS_ORIGINS`                                           | `ORIGENES_WEB`                                                  |
 | Identificadores      | En inglés (CLAUDE.md raíz)                               | En español                                                      |
-| Ramas                | `feature/RF-xx-…`, commits con `(RF-xx)`                 | `prototipo/…`, commits sin RF                                   |
 | Alfabeto canónico    | Datos iniciales de letras en la API (ADR-0006)           | No hay contenidos; la tabla vive en `braille-core` del frontend |
 | Despliegue           | Por decidir                                              | Dockerfile + Railway                                            |
 
