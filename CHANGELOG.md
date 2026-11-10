@@ -5,6 +5,14 @@ Cada `release/*` mueve lo de "Sin publicar" a su versión.
 
 ## [Sin publicar]
 
+### Agregado
+
+- Flujo `.github/workflows/seguridad.yml`: Gitleaks revisa secretos en el historial y `pnpm audit --audit-level high` revisa vulnerabilidades en dependencias, en cada PR y en cada push a `main`.
+
+### Cambiado
+
+- `CLAUDE.md`: las ramas siguen Git Flow desde `develop` (`feature/RF-xx-…`) en lugar de ramas `prototipo/` desde `main`. La etiqueta `prototipo` se mantiene.
+
 ### Corregido
 
 - El check "Conventional Commits" no corría en ningún PR: `.github/workflows/pr-title.yml` usaba `pull_request_target`, que GitHub toma de la rama por defecto (`main`), donde el flujo no existe. Ahora usa `pull_request`.
