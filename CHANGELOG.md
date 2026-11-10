@@ -11,6 +11,7 @@ Cada `release/*` mueve lo de "Sin publicar" a su versión.
 
 ### Cambiado
 
+- Los alcances válidos en el título del PR (`.github/workflows/pr-title.yml`) son los de `docs/metodologia/flujo-de-trabajo.md`, iguales en los dos repos: `dispositivo`, `lectura`, `escritura`, `narracion`, `progreso`, `usuarios`, `dominio`, `api`, `ui`, `ci` y `deps`. Se quitan `identidad`, `contenidos`, `reportes`, `salud` y `prisma`.
 - `CLAUDE.md`: las ramas siguen Git Flow desde `develop` (`feature/RF-xx-…`) en lugar de ramas `prototipo/` desde `main`. La etiqueta `prototipo` se mantiene.
 
 ### Corregido

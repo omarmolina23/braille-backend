@@ -28,14 +28,17 @@ jobs:
             chore
             ci
             perf
+          # Alcances de docs/metodologia/flujo-de-trabajo.md; la lista es la misma en los dos repos.
           scopes: |
-            api
-            identidad
-            contenidos
+            dispositivo
+            lectura
+            escritura
+            narracion
             progreso
-            reportes
-            salud
-            prisma
+            usuarios
+            dominio
+            api
+            ui
             ci
             deps
           requireScope: false
